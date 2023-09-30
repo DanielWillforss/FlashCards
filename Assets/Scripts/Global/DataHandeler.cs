@@ -2,23 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-#if UNITY_EDITOR
-    using UnityEditor;
-#endif
 
 //Rename to Data Util
 public class DataHandeler : MonoBehaviour
 {
-    private static readonly string path = "Assets/Data/card_data.txt";
+    private static readonly string path = Application.persistentDataPath + "/card_data.txt";
 
     public static void AddNewData(string word, string translation, int initIndex = 0)
     {
+        Debug.Log(path);
         StreamWriter writer = new StreamWriter(path, true);
         writer.WriteLine(initIndex + "*" + word + "*" + translation);
         writer.Close();
-        #if UNITY_EDITOR
-            AssetDatabase.ImportAsset(path);
-        #endif
     }
 
     public static string[] GetAllData()
@@ -66,8 +61,5 @@ public class DataHandeler : MonoBehaviour
     public static void ReplaceData(string[] newData)
     {
         File.WriteAllLines(path, newData);
-        #if UNITY_EDITOR
-            AssetDatabase.ImportAsset(path);
-        #endif
     }
 }

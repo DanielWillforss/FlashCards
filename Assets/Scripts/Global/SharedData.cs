@@ -6,7 +6,7 @@ using UnityEngine;
 public class SharedData : MonoBehaviour
 {
     private int numberOfCards = 0;
-    private string[] allData = null;
+    public string[] allData = null;
     private string[][] cardsInUse = null;
 
     private void Awake()
