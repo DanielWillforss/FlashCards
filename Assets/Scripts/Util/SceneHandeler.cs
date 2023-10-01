@@ -16,4 +16,10 @@ public class SceneHandeler : MonoBehaviour
         Debug.Log("bye");
         Application.Quit();
     }
+
+    public static void SaveData()
+    {
+        SharedData sharedData = FindObjectOfType<SharedData>();
+        sharedData.CloseAndSave();
+    }
 }

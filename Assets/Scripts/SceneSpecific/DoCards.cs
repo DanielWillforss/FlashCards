@@ -11,12 +11,12 @@ public class DoCards : MonoBehaviour
     private SharedData sharedData;
     private int totalNumberOfCards;
     private int currentIndex = 0;
-    private string[] currentCard;
+    private FlashCard currentCard;
 
-    // Start is called before the first frame update
     void Start()
     {
         sharedData = FindObjectOfType<SharedData>();
+
         totalNumberOfCards = sharedData.GetNbrOfCards();
         if(totalNumberOfCards == 0)
         {
@@ -31,15 +31,17 @@ public class DoCards : MonoBehaviour
     private void ShowNewCard()
     {
         currentCard = sharedData.GetCard(currentIndex);
-        word.text = currentCard[1];
+        word.text = currentCard.GetWord();
         translation.text = "";
     }
 
+    //Add feedback
     public void ShowAnswer()
     {
-        translation.text = currentCard[2];
+        translation.text = currentCard.GetTranslation();
     }
 
+    //Add feedback
     public void NextCard(bool wasCorrect)
     {
         sharedData.UpdateScore(currentIndex, wasCorrect);
@@ -54,15 +56,10 @@ public class DoCards : MonoBehaviour
         }
     }
 
+    //Lock everything when done
     private void EndCards()
     {
         word.text = "done";
         translation.text = "good job";
-    }
-
-    public void ReturnToMenu()
-    {
-        sharedData.EndCurrentSession();
-        SceneHandeler.ChangeScene("FlashMenu");
     }
 }

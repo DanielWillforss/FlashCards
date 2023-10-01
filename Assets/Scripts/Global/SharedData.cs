@@ -6,12 +6,11 @@ using UnityEngine;
 public class SharedData : MonoBehaviour
 {
     private int numberOfCards = 0;
-    public string[] allData = null;
-    private string[][] cardsInUse = null;
+    public FlashCardList allData = null;
 
     private void Awake()
     {
-        GameObject[] objs = GameObject.FindGameObjectsWithTag("DontDestroy");
+        GameObject[] objs = GameObject.FindGameObjectsWithTag("AllData");
         if (objs.Length > 1)
         {
             Destroy(this.gameObject);
@@ -19,12 +18,22 @@ public class SharedData : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
-    public void SetActiveCards(int nbrOfCards)
+    private void Start()
     {
-        numberOfCards = nbrOfCards;
-        allData = DataHandeler.GetAllData();
-        Array.Sort<string>(allData, DataHandeler.CompareDataByNumber);
-        cardsInUse = DataHandeler.SplitData(allData, numberOfCards);
+        allData = new FlashCardList(DataHandeler.GetAllData());
+
+        Debug.Log(allData);
+    }
+
+    public void AddNewData(string word, string translation, int initIndex = 0)
+    {
+        allData.Add(new FlashCard(initIndex, word, translation));
+    }
+
+    public void SetNbrOfCards(int nbr)
+    {
+        numberOfCards = nbr;
+        allData.Sort();
     }
 
     public int GetNbrOfCards()
@@ -32,37 +41,24 @@ public class SharedData : MonoBehaviour
         return numberOfCards;
     }
 
-    public string[] GetCard(int index)
+    public FlashCard GetCard(int index)
     {
-        return cardsInUse[index];
+        return allData.Get(index);
     }
     
     public void UpdateScore(int index, bool wasCorrect)
     {
-        try
-        {
-            int currentScore = Int32.Parse(cardsInUse[index][0]);
-            if(wasCorrect)
-            {
-                currentScore++;
-            }
-            else
-            {
-                currentScore--;
-            }
-            cardsInUse[index][0] = currentScore.ToString();
-        }
-        catch (FormatException)
-        {
-            Debug.Log("Error");
-        }
+        allData.Get(index).UpdateValue(wasCorrect);
     }
 
-    public void EndCurrentSession()
+    private void OnApplicationQuit()
     {
-        DataHandeler.MergeData(cardsInUse, allData);
-        DataHandeler.ReplaceData(allData);
-        Destroy(this.gameObject);
+        DataHandeler.ReplaceData(allData.GetArray());
+    }
 
+    public void CloseAndSave()
+    {
+        DataHandeler.ReplaceData(allData.GetArray());
+        Destroy(this.gameObject);
     }
 }

@@ -862,8 +862,8 @@ GameObject:
   - component: {fileID: 806949504}
   - component: {fileID: 806949503}
   m_Layer: 0
-  m_Name: SharedData
-  m_TagString: DontDestroy
+  m_Name: AllData
+  m_TagString: AllData
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1640,7 +1640,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 437, y: -197}
+  m_AnchoredPosition: {x: 372, y: -197}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1749694614
@@ -1687,16 +1687,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2141374208}
-        m_TargetAssemblyTypeName: DoCards, Assembly-CSharp
-        m_MethodName: ReturnToMenu
-        m_Mode: 1
+      - m_Target: {fileID: 2141374207}
+        m_TargetAssemblyTypeName: SceneHandeler, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: MainMenu
+          m_StringArgument: FlashMenu
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1749694615
