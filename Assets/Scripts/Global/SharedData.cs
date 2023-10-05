@@ -25,9 +25,11 @@ public class SharedData : MonoBehaviour
         Debug.Log(allData);
     }
 
-    public void AddNewData(string word, string translation, int initIndex = 0)
+    public FlashCard AddNewData(string word, string translation, int initIndex = 0)
     {
-        allData.Add(new FlashCard(initIndex, word, translation));
+        FlashCard card = new FlashCard(initIndex, word, translation);
+        allData.Add(card);
+        return card;
     }
 
     public void SetNbrOfCards(int nbr)
@@ -45,11 +47,6 @@ public class SharedData : MonoBehaviour
     {
         return allData.Get(index);
     }
-    
-    public void UpdateScore(int index, bool wasCorrect)
-    {
-        allData.Get(index).UpdateValue(wasCorrect);
-    }
 
     private void OnApplicationQuit()
     {
@@ -60,5 +57,15 @@ public class SharedData : MonoBehaviour
     {
         DataHandeler.ReplaceData(allData.GetArray());
         Destroy(this.gameObject);
+    }
+
+    public int GetTotalNumberOfCards()
+    {
+        return allData.Length();
+    }
+
+    public void RemoveData(FlashCard card)
+    {
+        allData.Remove(card);
     }
 }

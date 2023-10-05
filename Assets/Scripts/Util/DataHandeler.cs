@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 using UnityEngine;
 
-public class DataHandeler : MonoBehaviour
+public static class DataHandeler
 {
     public static readonly string path = Application.persistentDataPath + "/card_data.txt";
 
@@ -14,8 +16,7 @@ public class DataHandeler : MonoBehaviour
 
         for (int i = 0; i < allData.Length; i++)
         {
-            string[] splitString = allData[i].Split("*");
-            allCards[i] = new FlashCard(splitString[0], splitString[1], splitString[2]);
+            allCards[i] = new FlashCard(allData[i]);
         }
 
         return allCards;
@@ -32,5 +33,22 @@ public class DataHandeler : MonoBehaviour
         }
 
         File.WriteAllLines(path, mergedData);
+    }
+
+    public static void Shuffle<T>(this IList<T> list)
+    {
+        RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
+        int n = list.Count;
+        while (n > 1)
+        {
+            byte[] box = new byte[1];
+            do provider.GetBytes(box);
+            while (!(box[0] < n * (Byte.MaxValue / n)));
+            int k = (box[0] % n);
+            n--;
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
     }
 }

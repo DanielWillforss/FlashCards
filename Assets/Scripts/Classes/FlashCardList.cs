@@ -38,6 +38,16 @@ public class FlashCardList
         return list.ToArray();
     }
 
+    public int Length()
+    {
+        return list.Count;
+    }
+
+    public bool Remove(FlashCard card)
+    {
+        return list.Remove(card);
+    }
+
     private static int CompareDataByNumber(FlashCard x, FlashCard y)
     {
         if (x == null || y == null)

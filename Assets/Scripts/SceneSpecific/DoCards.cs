@@ -2,16 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DoCards : MonoBehaviour
 {
     public TMP_Text word;
     public TMP_Text translation;
+    public Button showAnswersButton;
+    public Button correctButton;
+    public Button wrongButton;
 
     private SharedData sharedData;
     private int totalNumberOfCards;
     private int currentIndex = 0;
-    private FlashCard currentCard;
+    private List<FlashCard> randomList = new List<FlashCard>();
 
     void Start()
     {
@@ -24,27 +28,35 @@ public class DoCards : MonoBehaviour
         }
         else
         {
+            for(int i = 0; i < totalNumberOfCards; i++)
+            {
+                randomList.Add(sharedData.GetCard(i));
+            }
+            DataHandeler.Shuffle(randomList);
             ShowNewCard();
         }
     }
 
     private void ShowNewCard()
     {
-        currentCard = sharedData.GetCard(currentIndex);
-        word.text = currentCard.GetWord();
+        word.text = randomList[currentIndex].GetWord();
+        showAnswersButton.interactable = true;
+        correctButton.interactable = false;
+        wrongButton.interactable = false;
         translation.text = "";
     }
 
-    //Add feedback
     public void ShowAnswer()
     {
-        translation.text = currentCard.GetTranslation();
+        translation.text = randomList[currentIndex].GetTranslation();
+        showAnswersButton.interactable = false;
+        correctButton.interactable = true;
+        wrongButton.interactable = true;
     }
 
-    //Add feedback
     public void NextCard(bool wasCorrect)
     {
-        sharedData.UpdateScore(currentIndex, wasCorrect);
+        randomList[currentIndex].UpdateValue(wasCorrect);
         currentIndex++;
         if(currentIndex == totalNumberOfCards)
         {
@@ -56,10 +68,12 @@ public class DoCards : MonoBehaviour
         }
     }
 
-    //Lock everything when done
     private void EndCards()
     {
-        word.text = "done";
-        translation.text = "good job";
+        word.text = "Done";
+        translation.text = "Good job!";
+        showAnswersButton.interactable = false;
+        correctButton.interactable = false;
+        wrongButton.interactable = false;
     }
 }

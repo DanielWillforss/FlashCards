@@ -9,11 +9,12 @@ public class FlashCard
     private string word;
     private string translation;
 
-    public FlashCard(string value, string word, string translation)
+    public FlashCard(string dataString)
     {
-        this.value = Int32.Parse(value);
-        this.word = word;
-        this.translation = translation;
+        string[] splitString = dataString.Split("*");
+        this.value = Int32.Parse(splitString[0]);
+        this.word = splitString[1];
+        this.translation = splitString[2];
     }
 
     public FlashCard(int value, string word, string translation)

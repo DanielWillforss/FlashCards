@@ -7,23 +7,27 @@ using UnityEngine;
 public class StartCards : MonoBehaviour
 {
     public TMP_InputField inputField;
+    public TMP_Text feedbackText;
     private SharedData sharedData;
 
     void Start()
     {
         sharedData = FindObjectOfType<SharedData>();
+        feedbackText.text = "Total number of words: " + sharedData.GetTotalNumberOfCards();
     }
 
     //Logic to make sure it's only numbers
     public void StartFlashCards()
     {
-        try
+        int? input = ValidateInput.ValidatePosInt(inputField.text);
+        if(input == null)
         {
-            sharedData.SetNbrOfCards(Int32.Parse(inputField.text));
+            feedbackText.text = "Input is not a valid number";
         }
-        catch (FormatException)
+        else
         {
-            Debug.Log("Error");
-        }
+            sharedData.SetNbrOfCards(input.Value);
+            SceneHandeler.ChangeScene("FlashWords");
+        }  
     }
 }
