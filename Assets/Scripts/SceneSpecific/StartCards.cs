@@ -8,12 +8,15 @@ public class StartCards : MonoBehaviour
 {
     public TMP_InputField inputField;
     public TMP_Text feedbackText;
-    private SharedData sharedData;
+    private CardListManger cardList;
+    private StateInfo stateInfo;
 
     void Start()
     {
-        sharedData = FindObjectOfType<SharedData>();
-        feedbackText.text = "Total number of words: " + sharedData.GetTotalNumberOfCards();
+        SharedData s = SharedData.GetSharedData();
+        cardList = s.GetCardList();
+        stateInfo = s.GetStateInfo();
+        feedbackText.text = "Total number of words: " + cardList.Length();
     }
 
     //Logic to make sure it's only numbers
@@ -26,7 +29,7 @@ public class StartCards : MonoBehaviour
         }
         else
         {
-            sharedData.SetNbrOfCards(input.Value);
+            stateInfo.SetNbrOfCards(input.Value);
             SceneHandeler.ChangeScene("FlashWords");
         }  
     }

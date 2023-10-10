@@ -6,6 +6,6 @@
 **/obj
 .vs/
 .vsconfig
-Assembly-CSharp.csproj
-FlashCards.sln
-My project.sln
+.csproj
+.sln
+.sln

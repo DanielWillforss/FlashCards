@@ -11,27 +11,36 @@ public class AddWords : MonoBehaviour
     public TMP_Text feedbackText;
     public Button revertButton;
 
-    private SharedData sharedData;
+    private CardListManger cardList;
     private FlashCard lastCard = null;
 
     void Start()
     {
-        sharedData = FindObjectOfType<SharedData>();
+        cardList = SharedData.GetSharedData().GetCardList();
         revertButton.interactable = false;
     }
 
     public void AddWordButton()
     {
-        feedbackText.text = "Added: " + word.text + " * " + translation.text;
-        lastCard = sharedData.AddNewData(word.text, translation.text);
-        word.text = "";
-        translation.text = "";
-        revertButton.interactable = true;
+        string w = ValidateInput.ValidateGeneralString(word.text);
+        string t = ValidateInput.ValidateGeneralString(translation.text);
+        if(w != null && t != null)
+        {
+            feedbackText.text = "Added: " + word.text + " -> " + translation.text;
+            lastCard = cardList.AddNewCard(word.text, translation.text);
+            word.text = "";
+            translation.text = "";
+            revertButton.interactable = true;
+        } 
+        else
+        {
+            feedbackText.text = "Not valid inputs";
+        }
     }
 
     public void RemoveLastWord()
     {
-        sharedData.RemoveData(lastCard);
+        cardList.RemoveCard(lastCard);
         feedbackText.text = "Removed: " + lastCard.GetWord() + " * " + lastCard.GetTranslation();
         lastCard = null;
         revertButton.interactable = false;

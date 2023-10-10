@@ -55,6 +55,14 @@ public class FlashCardList
             return 0;
         }
 
-        return x.GetValue() - y.GetValue();
+        int dif = x.GetValue() - y.GetValue();
+        if(dif != 0)
+        {
+            return dif;
+        }
+        else
+        {
+            return x.GetWord().CompareTo(y.GetWord());
+        }
     }
 }

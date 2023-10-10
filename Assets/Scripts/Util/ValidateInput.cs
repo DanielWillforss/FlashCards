@@ -24,4 +24,13 @@ public class ValidateInput
         }
         return null;
     }
+
+    public static string ValidateGeneralString(string input)
+    {
+        if (input == null || input == "" || input.Contains("*"))
+        {
+            return null;
+        }
+        return input;
+    }
 }

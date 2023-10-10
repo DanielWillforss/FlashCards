@@ -12,16 +12,20 @@ public class DoCards : MonoBehaviour
     public Button correctButton;
     public Button wrongButton;
 
-    private SharedData sharedData;
+    private CardListManger cardList;
+    private StateInfo stateInfo;
     private int totalNumberOfCards;
     private int currentIndex = 0;
     private List<FlashCard> randomList = new List<FlashCard>();
 
     void Start()
     {
-        sharedData = FindObjectOfType<SharedData>();
+        SharedData s = SharedData.GetSharedData();
+        cardList = s.GetCardList();
+        stateInfo = s.GetStateInfo();
 
-        totalNumberOfCards = sharedData.GetNbrOfCards();
+        cardList.SortData();
+        totalNumberOfCards = stateInfo.GetNbrOfCards();
         if(totalNumberOfCards == 0)
         {
             EndCards();
@@ -30,7 +34,7 @@ public class DoCards : MonoBehaviour
         {
             for(int i = 0; i < totalNumberOfCards; i++)
             {
-                randomList.Add(sharedData.GetCard(i));
+                randomList.Add(cardList.GetCard(i));
             }
             DataHandeler.Shuffle(randomList);
             ShowNewCard();

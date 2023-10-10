@@ -5,67 +5,56 @@ using UnityEngine;
 
 public class SharedData : MonoBehaviour
 {
-    private int numberOfCards = 0;
-    public FlashCardList allData = null;
+    private static SharedData dataInstance = null;
+    private StateInfo stateInfoScript;
+    private CardListManger cardListScript;
+    private FlaggedCards flaggedCardsScript;
 
     private void Awake()
     {
-        GameObject[] objs = GameObject.FindGameObjectsWithTag("AllData");
-        if (objs.Length > 1)
+        if (dataInstance == null)
+        {
+            DontDestroyOnLoad(this.gameObject);
+            dataInstance = this;
+
+            stateInfoScript = GetComponent<StateInfo>();
+            cardListScript = GetComponent<CardListManger>();
+            flaggedCardsScript = GetComponent<FlaggedCards>();
+        }
+        else
         {
             Destroy(this.gameObject);
         }
-        DontDestroyOnLoad(this.gameObject);
     }
 
-    private void Start()
+    public static SharedData GetSharedData()
     {
-        allData = new FlashCardList(DataHandeler.GetAllData());
-
-        Debug.Log(allData);
+        return dataInstance;
     }
 
-    public FlashCard AddNewData(string word, string translation, int initIndex = 0)
-    {
-        FlashCard card = new FlashCard(initIndex, word, translation);
-        allData.Add(card);
-        return card;
+    public StateInfo GetStateInfo() {
+        return stateInfoScript;
     }
 
-    public void SetNbrOfCards(int nbr)
+    public CardListManger GetCardList()
     {
-        numberOfCards = nbr;
-        allData.Sort();
+        return cardListScript;
     }
 
-    public int GetNbrOfCards()
+    public FlaggedCards GetFlaggedCards()
     {
-        return numberOfCards;
-    }
-
-    public FlashCard GetCard(int index)
-    {
-        return allData.Get(index);
-    }
-
-    private void OnApplicationQuit()
-    {
-        DataHandeler.ReplaceData(allData.GetArray());
+        return flaggedCardsScript;
     }
 
     public void CloseAndSave()
     {
-        DataHandeler.ReplaceData(allData.GetArray());
+        FindObjectOfType<CardListManger>().SaveData();
+        dataInstance = null;
         Destroy(this.gameObject);
     }
 
-    public int GetTotalNumberOfCards()
+    private void OnApplicationQuit()
     {
-        return allData.Length();
-    }
-
-    public void RemoveData(FlashCard card)
-    {
-        allData.Remove(card);
+        CloseAndSave();
     }
 }

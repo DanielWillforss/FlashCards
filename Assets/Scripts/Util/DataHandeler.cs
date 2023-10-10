@@ -7,7 +7,7 @@ using UnityEngine;
 
 public static class DataHandeler
 {
-    public static readonly string path = Application.persistentDataPath + "/card_data.txt";
+    public static readonly string path = Application.persistentDataPath + "/card_data_test.txt";
 
     public static FlashCard[] GetAllData()
     {
