@@ -11,8 +11,10 @@ public class DoCards : MonoBehaviour
     public Button showAnswersButton;
     public Button correctButton;
     public Button wrongButton;
+    public Button flagCardButton;
 
     private CardListManger cardList;
+    private FlaggedCards flaggedCards;
     private StateInfo stateInfo;
     private int totalNumberOfCards;
     private int currentIndex = 0;
@@ -22,6 +24,7 @@ public class DoCards : MonoBehaviour
     {
         SharedData s = SharedData.GetSharedData();
         cardList = s.GetCardList();
+        flaggedCards = s.GetFlaggedCards();
         stateInfo = s.GetStateInfo();
 
         cardList.SortData();
@@ -72,6 +75,11 @@ public class DoCards : MonoBehaviour
         }
     }
 
+    public void FlagCard()
+    {
+        flaggedCards.AddCard(randomList[currentIndex]);
+    }
+
     private void EndCards()
     {
         word.text = "Done";
@@ -79,5 +87,6 @@ public class DoCards : MonoBehaviour
         showAnswersButton.interactable = false;
         correctButton.interactable = false;
         wrongButton.interactable = false;
+        flagCardButton.interactable = false;
     }
 }

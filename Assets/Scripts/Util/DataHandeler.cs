@@ -7,16 +7,30 @@ using UnityEngine;
 
 public static class DataHandeler
 {
-    public static readonly string path = Application.persistentDataPath + "/card_data_test.txt";
+    public static readonly string path = Application.persistentDataPath + "/card_data_test3.txt";
 
     public static FlashCard[] GetAllData()
     {
+        if(!File.Exists(path))
+        {
+            return new FlashCard[0];
+        }
         string[] allData = File.ReadAllLines(path);
         FlashCard[] allCards = new FlashCard[allData.Length];
 
         for (int i = 0; i < allData.Length; i++)
         {
-            allCards[i] = new FlashCard(allData[i]);
+            string[] splitString = allData[i].Split("*");
+            if (allData[i].Length == 3)
+            {
+                int? value = ValidateInput.ValidateInt(splitString[0]);
+                string word = ValidateInput.ValidateGeneralString(splitString[1]);
+                string translation = ValidateInput.ValidateGeneralString(splitString[2]);
+                if(value != null && word != null && translation != null)
+                {
+                    allCards[i] = new FlashCard(value.Value, word, translation);
+                }
+            }
         }
 
         return allCards;

@@ -2,46 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardListManger : MonoBehaviour
+public class CardListManger : CardListBase
 {
-    private FlashCardList allData = null;
 
-    private void Awake()
+    public void Create()
     {
-        allData = new FlashCardList(DataHandeler.GetAllData());
+        list = new List<FlashCard>(DataHandeler.GetAllData());
     }
 
     public FlashCard AddNewCard(string word, string translation, int initIndex = 0)
     {
         FlashCard card = new FlashCard(initIndex, word, translation);
-        allData.Add(card);
+        AddCard(card);
         return card;
-    }
-
-    public FlashCard GetCard(int index)
-    {
-        return allData.Get(index);
-    }
-
-    public void RemoveCard(FlashCard card)
-    {
-        allData.Remove(card);
-    }
-
-    public int Length()
-    {
-        return allData.Length();
-    }
-
-    public void SortData()
-    {
-        allData.Sort();
     }
 
     public void SaveData()
     {
         SortData();
-        DataHandeler.ReplaceData(allData.GetArray());
+        DataHandeler.ReplaceData(list.ToArray());
     }
 
 }

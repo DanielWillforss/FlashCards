@@ -19,7 +19,9 @@ public class SharedData : MonoBehaviour
 
             stateInfoScript = GetComponent<StateInfo>();
             cardListScript = GetComponent<CardListManger>();
+            cardListScript.Create();
             flaggedCardsScript = GetComponent<FlaggedCards>();
+            flaggedCardsScript.Create();
         }
         else
         {

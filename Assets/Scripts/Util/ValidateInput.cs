@@ -8,6 +8,17 @@ public class ValidateInput
 {
     public static int? ValidatePosInt(string input)
     {
+        int? validatedInt = ValidateInt(input);
+        
+        if(validatedInt > 0)
+        {
+            return validatedInt;
+        }
+        return null;
+    }
+
+    public static int? ValidateInt(string input)
+    {
         int validatedInt = 0;
         try
         {
@@ -17,12 +28,7 @@ public class ValidateInput
         {
             return null;
         }
-
-        if(validatedInt > 0)
-        {
-            return validatedInt;
-        }
-        return null;
+        return validatedInt;
     }
 
     public static string ValidateGeneralString(string input)

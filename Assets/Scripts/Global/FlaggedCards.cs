@@ -2,28 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlaggedCards : MonoBehaviour
+public class FlaggedCards : CardListBase
 {
 
-    public FlashCardList flaggedData = new FlashCardList();
+    public void Create()
+    {
+        list = new List<FlashCard>();
+    }
 
     public void FlagCard(FlashCard card)
     {
-        flaggedData.Add(card);
-    }
-
-    public FlashCard GetCard(int index)
-    {
-        return flaggedData.Get(index);
-    }
-
-    public void UnflagCard(FlashCard card)
-    {
-        flaggedData.Remove(card);
-    }
-
-    public int Length()
-    {
-        return flaggedData.Length();
+        if(!list.Contains(card))
+        {
+            AddCard(card);
+        }
     }
 }
