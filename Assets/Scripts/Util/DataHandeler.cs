@@ -7,7 +7,7 @@ using UnityEngine;
 
 public static class DataHandeler
 {
-    public static readonly string path = Application.persistentDataPath + "/card_data_test3.txt";
+    public static readonly string path = Application.persistentDataPath + "/card_data.txt";
 
     public static FlashCard[] GetAllData()
     {
@@ -21,12 +21,13 @@ public static class DataHandeler
         for (int i = 0; i < allData.Length; i++)
         {
             string[] splitString = allData[i].Split("*");
-            if (allData[i].Length == 3)
+            if (splitString.Length == 3)
             {
                 int? value = ValidateInput.ValidateInt(splitString[0]);
                 string word = ValidateInput.ValidateGeneralString(splitString[1]);
                 string translation = ValidateInput.ValidateGeneralString(splitString[2]);
-                if(value != null && word != null && translation != null)
+
+                if (value != null && word != null && translation != null)
                 {
                     allCards[i] = new FlashCard(value.Value, word, translation);
                 }

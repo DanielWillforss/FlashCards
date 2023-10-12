@@ -8,18 +8,18 @@ public class SceneHandeler : MonoBehaviour
 {
     public static void ChangeScene(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
+        if(sceneName == "Exit")
+        {
+            Exit();
+        } 
+        else
+        {
+            SceneManager.LoadScene(sceneName);
+        }
     }
 
     public static void Exit()
     {
-        Debug.Log("bye");
         Application.Quit();
-    }
-
-    public static void SaveData()
-    {
-        SharedData sharedData = FindObjectOfType<SharedData>();
-        sharedData.CloseAndSave();
     }
 }

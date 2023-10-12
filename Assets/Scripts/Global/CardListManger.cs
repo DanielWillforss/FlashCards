@@ -7,7 +7,8 @@ public class CardListManger : CardListBase
 
     public void Create()
     {
-        list = new List<FlashCard>(DataHandeler.GetAllData());
+        FlashCard[] cards = DataHandeler.GetAllData();
+        list = new List<FlashCard>(cards);
     }
 
     public FlashCard AddNewCard(string word, string translation, int initIndex = 0)

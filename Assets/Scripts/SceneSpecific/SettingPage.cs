@@ -9,7 +9,6 @@ public class SettingPage : MonoBehaviour
 
     void Start()
     {
-
-        path.text = DataHandeler.path;
+        path.text = "File Path: " + DataHandeler.path;
     }
 }
