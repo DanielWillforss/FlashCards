@@ -8,6 +8,7 @@ public class AddWords : MonoBehaviour
 {
     public TMP_InputField word;
     public TMP_InputField translation;
+    public TMP_InputField initValue;
     public TMP_Text feedbackText;
     public Button revertButton;
 
@@ -24,10 +25,15 @@ public class AddWords : MonoBehaviour
     {
         string w = ValidateInput.ValidateGeneralString(word.text);
         string t = ValidateInput.ValidateGeneralString(translation.text);
+        int? i = ValidateInput.ValidateInt(initValue.text);
         if(w != null && t != null)
         {
-            feedbackText.text = "Added: " + word.text + " -> " + translation.text;
-            lastCard = cardList.AddNewCard(word.text, translation.text);
+            feedbackText.text = "Added: " + w + " -> " + t;
+
+            lastCard = i != null ? 
+                cardList.AddNewCard(w, t, i.Value) : 
+                cardList.AddNewCard(w, t);
+
             word.text = "";
             translation.text = "";
             revertButton.interactable = true;
