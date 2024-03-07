@@ -8,15 +8,19 @@ public class StartCards : MonoBehaviour
 {
     public TMP_InputField inputField;
     public TMP_Text feedbackText;
-    private CardListManger cardList;
+    private CardList cardList;
     private StateInfo stateInfo;
 
     void Start()
     {
-        SharedData s = SharedData.GetSharedData();
+        DontDestroyHandeler s = DontDestroyHandeler.GetHandeler();
         cardList = s.GetCardList();
         stateInfo = s.GetStateInfo();
-        feedbackText.text = "Total number of words: " + cardList.Length();
+        cardList.SortData();
+        FlashCard worstCard = cardList.GetCard(0);
+        feedbackText.text = "Total number of words: " + cardList.Length() + 
+            "\nWorst performing: '" + worstCard.GetWord() + "' - '" + worstCard.GetTranslation() + "' (" + worstCard.GetValue() + ")";
+
     }
 
     //Logic to make sure it's only numbers
@@ -29,7 +33,7 @@ public class StartCards : MonoBehaviour
         }
         else
         {
-            stateInfo.SetNbrOfCards(input.Value);
+            stateInfo.numberOfCards = input.Value;
             SceneHandeler.ChangeScene("FlashWords");
         }  
     }

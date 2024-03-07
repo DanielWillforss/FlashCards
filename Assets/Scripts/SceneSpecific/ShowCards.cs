@@ -5,29 +5,29 @@ using UnityEngine;
 
 public class ShowCards : MonoBehaviour
 {
-    public bool isFlaggedCards;
     public TMP_Text pageText;
     public TMP_Text numberOfCardsText;
     private List<CardPanel> panels;
-    private CardListBase cardList;
+    private CardList cardList;
     private int currentIndex = 0;
     private int numberOfPanels;
+    private int lastIndex;
+    private bool onlyShowFlagged = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        if(isFlaggedCards)
-        {
-            cardList = SharedData.GetSharedData().GetFlaggedCards();
-        }
-        else
-        {
-            cardList = SharedData.GetSharedData().GetCardList();
-        }
+        cardList = DontDestroyHandeler.GetHandeler().GetCardList();
+
         cardList.SortData();
         panels = new List<CardPanel>(FindObjectsOfType<CardPanel>());
-        panels.Sort(ComparePanelByYPos);
+        panels.Sort(ComparePanelByPos);
         numberOfPanels = panels.Count;
+        lastIndex = (cardList.Length()-1)/numberOfPanels;
+        if(lastIndex < 0)
+        {
+            lastIndex = 0;
+        }
 
         foreach (CardPanel p in panels)
         {
@@ -37,19 +37,48 @@ public class ShowCards : MonoBehaviour
         SetCards();
     }
 
-    public void NextPageButton()
+    public void OnlyShowFlaggedButton()
     {
-        currentIndex++;
+        onlyShowFlagged = !onlyShowFlagged;
+        if(onlyShowFlagged)
+        {
+            lastIndex = (cardList.LengthOfFlagged() - 1) / numberOfPanels;
+            if(currentIndex > lastIndex)
+            {
+                currentIndex = lastIndex;
+            }
+            cardList.SortDataByFlagged();
+        }
+        else
+        {
+            lastIndex = (cardList.Length() - 1) / numberOfPanels;
+            cardList.SortData();
+        }
         SetCards();
     }
 
-    public void LastPageButton()
+    public void NextPageButton()
+    {
+        if(currentIndex < lastIndex)
+        {
+            currentIndex++;
+        } else
+        {
+            currentIndex = 0;
+        }
+        SetCards();
+    }
+
+    public void PrevoiusPageButton()
     {
         if(currentIndex > 0)
         {
             currentIndex--;
-            SetCards();
+        } else
+        {
+            currentIndex = lastIndex;
         }
+        SetCards();
     }
 
     private void SetCards()
@@ -63,7 +92,15 @@ public class ShowCards : MonoBehaviour
             int cardIndex = currentIndex * numberOfPanels + i;
             if (cardIndex < numberOfCards)
             {
-                panels[i].SetCard(cardList.GetCard(cardIndex));
+                FlashCard card = cardList.GetCard(cardIndex);
+                if(onlyShowFlagged && !card.GetIsFlagged())
+                {
+                    panels[i].EmptyCard();
+                }
+                else
+                {
+                    panels[i].SetCard(card);
+                }
             }
             else
             {
@@ -72,13 +109,36 @@ public class ShowCards : MonoBehaviour
         }
     }
 
-    private static int ComparePanelByYPos(CardPanel x, CardPanel y)
+    private static int ComparePanelByPos(CardPanel x, CardPanel y)
     {
         if (x == null || y == null)
         {
             return 0;
         }
+
+        Vector2 xPos = x.gameObject.transform.position;
+        Vector2 yPos = y.gameObject.transform.position;
+
         
-        return y.gameObject.transform.position.y.CompareTo(x.gameObject.transform.position.y);
+        if (xPos.y > yPos.y)
+        {
+            return -1;
+        }
+        else if (xPos.y < yPos.y)
+        {
+            return 1;
+        }
+        else if (xPos.x > yPos.x)
+        {
+            return 1;
+        }
+        else if (xPos.x < yPos.x)
+        {
+            return -1;
+        }
+        else
+        {
+            return 0;
+        }
     }
 }

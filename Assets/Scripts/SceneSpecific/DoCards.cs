@@ -13,8 +13,7 @@ public class DoCards : MonoBehaviour
     public Button wrongButton;
     public Button flagCardButton;
 
-    private CardListManger cardList;
-    private FlaggedCards flaggedCards;
+    private CardList cardList;
     private StateInfo stateInfo;
     private int totalNumberOfCards;
     private int currentIndex = 0;
@@ -22,13 +21,12 @@ public class DoCards : MonoBehaviour
 
     void Start()
     {
-        SharedData s = SharedData.GetSharedData();
+        DontDestroyHandeler s = DontDestroyHandeler.GetHandeler();
         cardList = s.GetCardList();
-        flaggedCards = s.GetFlaggedCards();
         stateInfo = s.GetStateInfo();
 
         cardList.SortData();
-        totalNumberOfCards = stateInfo.GetNbrOfCards();
+        totalNumberOfCards = stateInfo.numberOfCards;
         if(totalNumberOfCards == 0)
         {
             EndCards();
@@ -59,6 +57,10 @@ public class DoCards : MonoBehaviour
         showAnswersButton.interactable = false;
         correctButton.interactable = true;
         wrongButton.interactable = true;
+        if (100 * Random.value < stateInfo.pronFreq) //should be pronFreq%
+        {
+            translation.text = translation.text + "\nCheck Pronunciation";
+        }
     }
 
     public void NextCard(bool wasCorrect)
@@ -77,7 +79,7 @@ public class DoCards : MonoBehaviour
 
     public void FlagCard()
     {
-        flaggedCards.AddCard(randomList[currentIndex]);
+        randomList[currentIndex].SetIsFlagged(true);
     }
 
     private void EndCards()

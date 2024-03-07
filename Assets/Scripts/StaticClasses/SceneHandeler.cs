@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneHandeler : MonoBehaviour
+public static class SceneHandeler
 {
     public static void ChangeScene(string sceneName)
     {
