@@ -35,16 +35,16 @@ public class DoCards : MonoBehaviour
         {
             for(int i = 0; i < totalNumberOfCards; i++)
             {
-                randomList.Add(cardList.GetCard(i));
+                randomList.Add(cardList.list[i]);
             }
-            DataHandeler.Shuffle(randomList);
+            DataUtil.Shuffle(randomList);
             ShowNewCard();
         }
     }
 
     private void ShowNewCard()
     {
-        word.text = randomList[currentIndex].GetWord();
+        word.text = randomList[currentIndex].word;
         showAnswersButton.interactable = true;
         correctButton.interactable = false;
         wrongButton.interactable = false;
@@ -53,7 +53,7 @@ public class DoCards : MonoBehaviour
 
     public void ShowAnswer()
     {
-        translation.text = randomList[currentIndex].GetTranslation();
+        translation.text = randomList[currentIndex].translation;
         showAnswersButton.interactable = false;
         correctButton.interactable = true;
         wrongButton.interactable = true;
@@ -79,7 +79,7 @@ public class DoCards : MonoBehaviour
 
     public void FlagCard()
     {
-        randomList[currentIndex].SetIsFlagged(true);
+        randomList[currentIndex].isFlagged = true;
     }
 
     private void EndCards()

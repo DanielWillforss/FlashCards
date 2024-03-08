@@ -22,20 +22,20 @@ public class SettingPage : MonoBehaviour
         cardList = s.GetCardList();
         stateInfo = s.GetStateInfo();
 
-        path.text = DataHandeler.path;
-        printPath.text = DataHandeler.printPath;
+        path.text = "outdated"; //DataUtil.path;
+        printPath.text = "outdated"; // DataUtil.printPath;
         pronunciationFreqField.text = stateInfo.pronFreq.ToString();
     }
 
     public void PrintButton()
     {
-        DataHandeler.PrintData(cardList.GetCardArray(), indexToggle.isOn, valueToggle.isOn);
+        DataUtil.PrintData(cardList.list.ToArray(), indexToggle.isOn, valueToggle.isOn);
         printFeedbackText.text = "Printed!";
     }
 
     public void ChangePronFreq()
     {
-        int freq = ValidateInput.ValidatePosInt(pronunciationFreqField.text) ?? 0;
+        int freq = ValidateUtil.ValidatePosInt(pronunciationFreqField.text) ?? 0;
         stateInfo.pronFreq = freq;
         pronunciationFreqField.text = stateInfo.pronFreq.ToString();
     }

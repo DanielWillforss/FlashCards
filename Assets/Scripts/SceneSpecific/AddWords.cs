@@ -29,9 +29,9 @@ public class AddWords : MonoBehaviour
 
     public void AddWordButton()
     {
-        string w = ValidateInput.ValidateGeneralString(word.text);
-        string t = ValidateInput.ValidateGeneralString(translation.text);
-        int? i = ValidateInput.ValidateInt(initValue.text);
+        string w = ValidateUtil.ValidateGeneralString(word.text);
+        string t = ValidateUtil.ValidateGeneralString(translation.text);
+        int? i = ValidateUtil.ValidateInt(initValue.text);
         if(w != null && t != null)
         {
             feedbackText.text = "Added: " + w + " -> " + t;
@@ -52,8 +52,8 @@ public class AddWords : MonoBehaviour
 
     public void RemoveLastWord()
     {
-        cardList.RemoveCard(lastCard);
-        feedbackText.text = "Removed: " + lastCard.GetWord() + " * " + lastCard.GetTranslation();
+        cardList.list.Remove(lastCard);
+        feedbackText.text = "Removed: " + lastCard.word + " * " + lastCard.translation;
         lastCard = null;
         revertButton.interactable = false;
     }

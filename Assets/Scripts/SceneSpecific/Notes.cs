@@ -10,11 +10,11 @@ public class Notes : MonoBehaviour
 
     void Start()
     {
-        notepad.text = NoteHandeler.GetAllData();
+        notepad.text = NotepadUtil.GetAllData();
     }
 
     public void SaveText()
     {
-        NoteHandeler.ReplaceData(notepad.text);
+        NotepadUtil.ReplaceData(notepad.text);
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using System.Linq;
 
 public class ShowCards : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class ShowCards : MonoBehaviour
         panels = new List<CardPanel>(FindObjectsOfType<CardPanel>());
         panels.Sort(ComparePanelByPos);
         numberOfPanels = panels.Count;
-        lastIndex = (cardList.Length()-1)/numberOfPanels;
+        lastIndex = (cardList.list.Count-1)/numberOfPanels;
         if(lastIndex < 0)
         {
             lastIndex = 0;
@@ -42,7 +43,7 @@ public class ShowCards : MonoBehaviour
         onlyShowFlagged = !onlyShowFlagged;
         if(onlyShowFlagged)
         {
-            lastIndex = (cardList.LengthOfFlagged() - 1) / numberOfPanels;
+            lastIndex = (cardList.list.Count(card => card.isFlagged) - 1) / numberOfPanels;
             if(currentIndex > lastIndex)
             {
                 currentIndex = lastIndex;
@@ -51,7 +52,7 @@ public class ShowCards : MonoBehaviour
         }
         else
         {
-            lastIndex = (cardList.Length() - 1) / numberOfPanels;
+            lastIndex = (cardList.list.Count - 1) / numberOfPanels;
             cardList.SortData();
         }
         SetCards();
@@ -83,7 +84,7 @@ public class ShowCards : MonoBehaviour
 
     private void SetCards()
     {
-        int numberOfCards = cardList.Length();
+        int numberOfCards = cardList.list.Count;
         numberOfCardsText.text = "Total Cards: " + numberOfCards;
         pageText.text = currentIndex.ToString();
 
@@ -92,8 +93,8 @@ public class ShowCards : MonoBehaviour
             int cardIndex = currentIndex * numberOfPanels + i;
             if (cardIndex < numberOfCards)
             {
-                FlashCard card = cardList.GetCard(cardIndex);
-                if(onlyShowFlagged && !card.GetIsFlagged())
+                FlashCard card = cardList.list[cardIndex];
+                if(onlyShowFlagged && !card.isFlagged)
                 {
                     panels[i].EmptyCard();
                 }

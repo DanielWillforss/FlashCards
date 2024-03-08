@@ -11,7 +11,7 @@ public class SceneChangeButton : MonoBehaviour
     void Start()
     {
         string tag = gameObject.tag;
-        GetComponent<Button>().onClick.AddListener(() => SceneHandeler.ChangeScene(tag));
+        GetComponent<Button>().onClick.AddListener(() => SceneUtil.ChangeScene(tag));
         GetComponentInChildren<TMP_Text>().text = tag;
     }
 }

@@ -34,10 +34,10 @@ public class CardPanel : MonoBehaviour
     public void SetCard(FlashCard card)
     {
         this.card = card;
-        scoreInput.text = card.GetValue().ToString();
-        wordInput.text = card.GetWord();
-        translationInput.text = card.GetTranslation();
-        isFlagged = card.GetIsFlagged();
+        scoreInput.text = card.value.ToString();
+        wordInput.text = card.word;
+        translationInput.text = card.translation;
+        isFlagged = card.isFlagged;
         SetPanelStyle();
     }
 
@@ -113,17 +113,20 @@ public class CardPanel : MonoBehaviour
         if(!isEditMode)
         {
             isFlagged = !isFlagged;
-            card.SetIsFlagged(isFlagged);
+            card.isFlagged = isFlagged;
             SetPanelStyle();
             reloadCallback?.Invoke();
         }
         else
         {
             isEditMode = false;
-            int value = ValidateInput.ValidateInt(scoreInput.text) ?? card.GetValue(); ;
-            string word = ValidateInput.ValidateGeneralString(wordInput.text) ?? card.GetWord();
-            string translation = ValidateInput.ValidateGeneralString(translationInput.text) ?? card.GetTranslation();
-            card.SetCard(value, wordInput.text, translationInput.text);
+            int value = ValidateUtil.ValidateInt(scoreInput.text) ?? card.value; ;
+            string word = ValidateUtil.ValidateGeneralString(wordInput.text) ?? card.word;
+            string translation = ValidateUtil.ValidateGeneralString(translationInput.text) ?? card.translation;
+            card.value = value;
+            card.word = wordInput.text;
+            card.translation = translationInput.text;
+
             SetPanelStyle();
         }
     }
@@ -133,16 +136,16 @@ public class CardPanel : MonoBehaviour
         isEditMode = !isEditMode;
         if(!isEditMode)
         {
-            scoreInput.text = card.GetValue().ToString();
-            wordInput.text = card.GetWord();
-            translationInput.text = card.GetTranslation();
+            scoreInput.text = card.value.ToString();
+            wordInput.text = card.word;
+            translationInput.text = card.translation;
         }
         SetPanelStyle();
     }
 
     public void DeleteCardButton()
     {
-        cardList.RemoveCard(card);
+        cardList.list.Remove(card);
         if(reloadCallback != null)
         {
             reloadCallback();

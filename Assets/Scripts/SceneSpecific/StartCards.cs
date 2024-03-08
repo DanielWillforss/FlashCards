@@ -17,16 +17,16 @@ public class StartCards : MonoBehaviour
         cardList = s.GetCardList();
         stateInfo = s.GetStateInfo();
         cardList.SortData();
-        FlashCard worstCard = cardList.GetCard(0);
-        feedbackText.text = "Total number of words: " + cardList.Length() + 
-            "\nWorst performing: '" + worstCard.GetWord() + "' - '" + worstCard.GetTranslation() + "' (" + worstCard.GetValue() + ")";
+        FlashCard worstCard = cardList.list[0];
+        feedbackText.text = "Total number of words: " + cardList.list.Count + 
+            "\nWorst performing: '" + worstCard.word + "' - '" + worstCard.translation + "' (" + worstCard.value + ")";
 
     }
 
     //Logic to make sure it's only numbers
     public void StartFlashCards()
     {
-        int? input = ValidateInput.ValidatePosInt(inputField.text);
+        int? input = ValidateUtil.ValidatePosInt(inputField.text);
         if(input == null)
         {
             feedbackText.text = "Input is not a valid number";
@@ -34,7 +34,7 @@ public class StartCards : MonoBehaviour
         else
         {
             stateInfo.numberOfCards = input.Value;
-            SceneHandeler.ChangeScene("FlashWords");
+            SceneUtil.ChangeScene("FlashWords");
         }  
     }
 }
