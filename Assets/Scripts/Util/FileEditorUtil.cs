@@ -8,18 +8,18 @@ public static class FileEditorUtil
 {
     public static void Setup()
     {
-        FileBrowser.SetFilters(true, new FileBrowser.Filter("Text Files", ".txt"));
-        FileBrowser.SetDefaultFilter(".txt");
+        FileBrowser.SetFilters(true, new FileBrowser.Filter("Json files", ".json"));
+        FileBrowser.SetDefaultFilter(".json");
         FileBrowser.SetExcludedExtensions(".lnk", ".tmp", ".zip", ".rar", ".exe");
         FileBrowser.AddQuickLink("Users", "C:\\Users", null);
     }
 
-    public static void OpenEditor()
+    public static void OpenEditor(FileBrowser.OnSuccess onSuc, FileBrowser.OnCancel onCan, FileBrowser.PickMode mode)
     {
         FileBrowser.ShowLoadDialog(
-            (paths) => { printFromFile(paths[0]); },
-            () => { Debug.Log("Canceled"); },
-            FileBrowser.PickMode.Files, 
+            onSuc,
+            onCan,
+            mode, 
             false, 
             null, 
             null, 

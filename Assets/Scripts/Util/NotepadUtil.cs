@@ -6,10 +6,16 @@ using UnityEngine;
 
 public static class NotepadUtil
 {
-    public static readonly string path = Application.persistentDataPath + "/notes.txt";
+    public static readonly string basePath = Application.persistentDataPath + "/notes.txt";
 
-    public static string GetAllData()
+    public static string GetAllData(string p)
     {
+        string path = p;
+        if(p == "")
+        {
+            path = basePath;
+        }
+        Debug.Log(path);
         if (!File.Exists(path))
         {
             return "";
@@ -23,8 +29,13 @@ public static class NotepadUtil
         return text;
     }
 
-    public static void ReplaceData(string newText)
+    public static void ReplaceData(string p, string newText)
     {
+        string path = p;
+        if (p == "")
+        {
+            path = basePath;
+        }
         string[] mergedText = Regex.Split(newText, "\r\n|\r|\n");
         File.WriteAllLines(path, mergedText);
     }

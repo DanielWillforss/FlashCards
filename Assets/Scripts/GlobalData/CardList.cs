@@ -22,13 +22,13 @@ public class CardList
         return card;
     }
 
-    /*
-    public void SaveData()
+    public void ShiftAllCardsValue(int n)
     {
-        SortData(); //Mby Different sort
-        DataUtil.ReplaceData(list.ToArray());
+        foreach(FlashCard card in list)
+        {
+            card.value += n;
+        }
     }
-    */
 
     public void SortData()
     {

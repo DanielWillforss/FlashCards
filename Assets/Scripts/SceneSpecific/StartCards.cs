@@ -17,10 +17,7 @@ public class StartCards : MonoBehaviour
         cardList = s.GetCardList();
         stateInfo = s.GetStateInfo();
         cardList.SortData();
-        FlashCard worstCard = cardList.list[0];
-        feedbackText.text = "Total number of words: " + cardList.list.Count + 
-            "\nWorst performing: '" + worstCard.word + "' - '" + worstCard.translation + "' (" + worstCard.value + ")";
-
+        SetInfoText();
     }
 
     //Logic to make sure it's only numbers
@@ -36,5 +33,20 @@ public class StartCards : MonoBehaviour
             stateInfo.numberOfCards = input.Value;
             SceneUtil.ChangeScene("FlashWords");
         }  
+    }
+
+    private void SetInfoText()
+    {
+        FlashCard worstCard = cardList.list[0];
+        string t = "Information";
+        if(stateInfo.showTotalNumberOfWords)
+        {
+            t = t + "\nTotal number of words: " + cardList.list.Count;
+        }
+        if(stateInfo.showWorstPerforming)
+        {
+            t = t + "\nWorst performing: '" + worstCard.word + "' - '" + worstCard.translation + "' (" + worstCard.value + ")";
+        }
+        feedbackText.text = t;
     }
 }

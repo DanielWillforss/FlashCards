@@ -10,7 +10,7 @@ public static class DataUtil
     public static void SaveCardListToJson(CardList cardList)
     {
         string cardListData = JsonUtility.ToJson(cardList);
-        string filePath = Application.persistentDataPath + "/CardList.json";
+        string filePath = Application.persistentDataPath + "/CardList_test.json";
         File.WriteAllText(filePath, cardListData);
     }
 
@@ -45,6 +45,24 @@ public static class DataUtil
 
         string stateInfoData = File.ReadAllText(filePath);
         return JsonUtility.FromJson<StateInfo>(stateInfoData);
+    }
+
+    public static void ExportData(string path, CardList cardList)
+    {
+        string cardListData = JsonUtility.ToJson(cardList);
+        string dataPath = path + "/Data.json";
+        File.WriteAllText(dataPath, cardListData);
+    }
+
+    public static CardList ImportData(string path)
+    {
+        if (!File.Exists(path))
+        {
+            return new CardList { list = new List<FlashCard>() };
+        }
+
+        string cardListData = File.ReadAllText(path);
+        return JsonUtility.FromJson<CardList>(cardListData);
     }
 
     public static void PrintData(FlashCard[] newData, bool showIndex, bool showValue)
